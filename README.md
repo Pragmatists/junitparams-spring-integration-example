@@ -103,10 +103,8 @@ from apply method (and related methods code).
 
 Thanks to these you can now use your own created rules but as you see you are losing support for annotations:
 
-* @Repeat
-* @IfProfileValue
-* @Timed
+* ```@Repeat```
+* ```@IfProfileValue```
+* ```@Timed```
  
- on methods and @IfProfileValue for class.
-
 If you have any problems with these modifications let us know.
