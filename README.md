@@ -8,7 +8,7 @@ JUnitParams runner must be top junit runner. Combining it with spring was imposs
 
 ## Alternative way to start spring context
 
-Since spring version 4.2 there were introduced two classes that help us start spring without any special runner defined: 
+Since **spring version 4.2** there were introduced two classes that help us start spring without any special runner defined: 
 * [SpringClassRule](http://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/test/context/junit4/rules/SpringClassRule.html)
 * [SpringMethodRule](http://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/test/context/junit4/rules/SpringMethodRule.html)
 
@@ -77,3 +77,36 @@ public class CalculationEndpointTest {
     }
 }
 ```
+
+## Older version of spring and JUnitParams
+
+What if you are using older version of spring and you can not migrate to newer one. Generally it is possible to implement
+SpringClassRule and SpringMethodRule by copying them from spring 4.2 to your project. You will also need to copy 
+ class RunPrepareTestInstanceCallbacks. 
+ 
+In SpringClassRule you need to remove line 
+  
+```java
+statement = withProfileValueCheck(statement, testClass);
+```
+
+from apply method (and related methods code). 
+
+In SpringMethodRule you need also small modifications. Remove
+
+```java
+statement = withPotentialRepeat(statement, frameworkMethod, testInstance);
+statement = withPotentialTimeout(statement, frameworkMethod, testInstance);
+statement = withProfileValueCheck(statement, frameworkMethod, testInstance);
+```
+from apply method (and related methods code).
+
+Thanks to these you can now use your own created rules but as you see you are losing support for annotations:
+
+* @Repeat
+* @IfProfileValue
+* @Timed
+ 
+ on methods and @IfProfileValue for class.
+
+If you have any problems with these modifications let us know.
